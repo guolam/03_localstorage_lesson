@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>myMemoPad中級</title>
+  <link rel="stylesheet" href="css/sample.css">
+</head>
+
+<body>
+  <header>
+    <h1>MemoPad中級編</h1>
+  </header>
+
+  <main>
+    <!-- inputの部分 -->
+    <!-- 日付 -->
+    <div id="memo">
+      <input type="text" id="self_title" class="self_title">
+      <input type="text" id="title">
+      <input type="text" id="self_mountain" class="self_title">
+      <input type="text" id="mountain"><!-- 行った山 -->
+      <!-- 名前で検索で -->
+      <input type="text" id="self_spring" class="self_title">
+      <input type="text" id="spring">
+      <input type="text" id="self_food" class="self_title">
+      <input type="text" id="food">
+      <p>所感</p>
+      <textarea type="text_area" id="text_area"></textarea><!-- メモ -->
+      <p>画像</p>
+      <input type="pic" id="pic">
+    </div>
+    <!-- 写真をアップ -->
+
+    <!-- やりたいこと -->
+    <!-- 天気を表示
+入れた山を自動保存
+楽しく行った山を集計
+マップで表示
+山と温泉の使用率集計www
+
+<select name="" id="select"></select>
+ -->
+
+    <ul>
+      <li id="save">Save</li>
+      <li id="clear">Clear</li>
+      <li id="save2">タイトル設定</li>
+      <li id="clear2">タイトルリセット</li>
+    </ul>
+
+    <ul class="list-group" id="list"></ul>
+
+  </main>
+
+
+  <footer>
+    <small>G's</small>
+  </footer>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    // メインデータを保存するときの処理
+    $("#save").on("click", function () {
+      const title = $("#title").val();
+      const mountain = $("#mountain").val();
+      const spring = $("#spring").val();
+      const food = $("#food").val();
+      const text = $("#text_area").val();
+      const pic = $("#pic").val();
+
+      const maindata = {
+        title: title,
+        mountain: mountain,
+        spring: spring,
+        food: food,
+        text: text,
+        pic: pic,
+      };
+
+      //JSON データを変換する処理
+      const jsonData = JSON.stringify(maindata); //stringify 文字列
+      localStorage.setItem("maindata", jsonData);
+
+      console.log(jsonData);
+    });
+
+
+
+
+    // //JSONデータを配列やオブジェクトに戻す処理
+    const jsonData = localStorage.getItem("maindata");
+    const maindata = JSON.parse(jsonData); //parse=解析する
+    console.log(maindata);
+
+    //データを所得するときの処理
+    if (localStorage.getItem("maindata")) {
+      const mountain_object = localStorage.getItem("maindata");
+      $("#title").val(maindata.title)
+      $("#mountain").val(maindata.mountain);
+      $("#spring").val(maindata.spring);
+      $("#food").val(maindata.food);
+      $("#text_area").val(maindata.text);
+      $("#pic").val(maindata.pic);
+    }
+    // //データを削除する処理
+    $("#clear").on("click", function () {
+      localStorage.removeItem("maindata");
+      $("#title").val("");
+      $("#mountain").val("");
+      $("#spring").val("");
+      $("#food").val("");
+      $("#text_area").val("");
+      $("#pic").val("");
+    });
+
+
+    console.log(maindata)
+    console.log(maindata / spring);//温泉を探す
+
+
+    // // //メモを増殖する
+    // $("#save").on("click", function () {
+    //   localStorage.setItem(localStorage.length.toString().maindata.val());
+    //   maindata.val("");
+    //   showList();
+
+    // //`開始条件`; `繰り返しを続ける条件`; `回数のカウントの仕方,実際に繰り返したい処理
+    // let bigdata = i
+
+    // for (let i = maindata; i.save; i++) {
+    //   console.log(i);
+    // }
+
+    //saveボタンを押した後、その配列を貯めていく方法
+
+    // $("#save").on("click", function () {
+    //   localStorage.setItem(localStorage.length.toString().$("#memo").val());
+    //   $("#memo").val("");
+    //   showList();
+
+    // });
+
+    // $("#memo").append("<li class='list-group-item'><li id='save' onclick='deleteItem(" + localStorage.key(i) + ")'><li id='clear'></i>" + localStorage.getItem(localStorage.key(i)) + "</li>");
+
+    // セルフ設定
+    // セルフ設定を保存するときの処理
+    $("#save2").on("click", function () {
+      const self_title = $("#self_title").val();
+      const self_mountain = $("#self_mountain").val();
+      const self_spring = $("#self_spring").val();
+      const self_food = $("#self_food").val();
+
+      const selfdata = {
+        self_title: self_title,
+        self_mountain: self_mountain,
+        self_spring: self_spring,
+        self_food: self_food,
+      };
+
+      //JSON データを変換する処理
+      const jsonData2 = JSON.stringify(selfdata); //stringify 文字列
+      localStorage.setItem("selfdata", jsonData2);
+
+      console.log(jsonData2);
+    });
+
+    // //JSONデータを配列やオブジェクトに戻す処理
+    const jsonData2 = localStorage.getItem("selfdata");
+    const selfdata = JSON.parse(jsonData2); //parse=解析する
+    console.log(selfdata);
+
+    //セルフ設定データを所得するときの処理
+    if (localStorage.getItem("selfdata")) {
+      const self_object = localStorage.getItem("selfdata");
+      $("#self_title").val(selfdata.self_title)
+      $("#self_mountain").val(selfdata.self_mountain);
+      $("#self_spring").val(selfdata.self_spring);
+      $("#self_food").val(selfdata.self_food);
+    }
+    // //セルフ設定データを削除する処理
+    $("#clear2").on("click", function () {
+      localStorage.removeItem("selfdata");
+      $("#self_title").val("");
+      $("#self_mountain").val("");
+      $("#self_spring").val("");
+      $("#self_food").val("");
+    });
+
+    //メモに入力するアイテム
+    const self_object = [
+      {
+        self_title: "1",
+        self_mountain: "2",
+        self_spring: "3",
+        self_food: "4",
+      },
+    ];
+
+    console.log(self_object)
+    console.log(self_object / self_spring);
+
+
+
+    //配列と繰り返し処理
+    // // optionタグの生成
+    // const start = 1901;
+    // const end = 2021;
+
+    // let option = "";
+
+    // for (let i = start; i <= end; i++) {
+    //   option += "<option>" + i + "</option>";
+    // }
+
+    // $("#select").html(option);
+
+    //オブジェの中身の配列
+
+    // const number_start = 1;
+    // const number_end = 50;
+
+    // let option = "";
+
+
+    // 配列の中身表示
+
+    // const list01 = ['月', '火', '水', '木', '金', '土', '日'];
+    // console.log(list01);
+
+    // // console.log(list01.length);
+
+    // for (let i = 0; i < list01.length; i++) {
+    //   console.log(list01[i]);
+
+    //   const array = [];
+
+    //   for (let i = 0; i < list01.length; i++) {
+    //     array.push("<p>" + list01[i] + "</p>");
+
+    //   }
+
+    //   $("#echo").html(array);
+
+    // };
+
+
+
+
+  </script>
+
+</body>
+
+</html>
